@@ -13,11 +13,11 @@
 + Chrome driver
 
 ### Usage
-1. `Git clone http://khuhub.khu.ac.kr/2020-02-database/2015103923.git`
+1. `Git clone https://github.com/HaewonSeo/Database.git`
 2. Connect to MySQL
 3. Run a app.py
 4. Accept Google location request
 
 ### Contact
-+ shw2662@khu.ac.kr
++ shw2662@gmail.com
 + Contact me if you want to access the database. Then I will let you know the account information.
