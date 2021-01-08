@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>index</title>
+	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+	<div style="text-align: left">
+		<button onclick="location.href='/'" class="homebtn"><i class="fa fa-home"></i> 편의점 재고 파악 시스템</button>
+	</div>
+
+	<h1 style="text-align:center;">
+		<br>내 주변 편의점 재고상황은?
+	</h1>
+</head>
+
+
+<body>
+	<!-- Search -->
+	<br><br><br><br><br><br><br>
+	<h2 style="text-align: center;">나의 현재 위치는?</h2>
+	<p id="demo" style="text-align: center;"></p>
+	<!-- Location -->
+
+	<div style="text-align: center;">
+		<button onclick="getLocation()" class="locationbtn"><i class="fas fa-location-arrow"></i></button>
+		<button type="submit" class="locationbtn" onclick="search()"><i class="fa fa-search"></i></button>
+	</div>
+
+	<!-- Login -->
+	<div style="text-align: center;">
+		<h2><br><br>사장님이신가요?</h2>
+		<button onclick="document.getElementById('loginid').style.display='block'" class="loginbtn">Login</button>
+	</div>
+
+	<!-- Login Modal -->
+	<div id="loginid" class="modal">
+
+		<form class="modal-content animate" action="/login" method="POST">
+			<div class="imgcontainer">
+				<span onclick="document.getElementById('loginid').style.display='none'" class="close"
+					title="Close Modal">&times;</span>
+				<!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
+			</div>
+
+			<div class="container">
+				<label for="Bid"><b>사업자등록번호</b></label>
+				<input type="text" placeholder="Enter Business registration number " name="Bid" required>
+
+				<label for="pwd"><b>Password</b></label>
+				<input type="password" placeholder="Enter Password" name="pwd" required>
+
+				<button type="submit" class="modal_loginbtn">Login</button>
+				<label>
+					<input type="checkbox" checked="checked" name="remember"> Remember me
+				</label>
+			</div>
+
+			<div class="container" style="background-color:#f1f1f1">
+				<button type="button" onclick="document.getElementById('loginid').style.display='none'"
+					class="cancelbtn">Cancel</button>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		var x = document.getElementById("demo");
+		var latitude;
+		var longitude;
+
+		function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			}
+			else {
+				x.innerHTML = "Geolocation is not supported by this browser.";
+			}
+		}
+
+		function showPosition(position) {
+			latitude = position.coords.latitude;
+			longitude = position.coords.longitude;
+			x.innerHTML = "위도: " + latitude + "<br>경도: " + longitude;
+		}
+
+		function search() {
+			location.href = "store_list?latitude=" + latitude + "&longitude=" + longitude;
+		}
+	</script>
+
+	<script>
+		// Get the modal
+		var modal = document.getElementById('loginid');
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+	</script>
+</body>
+
+</html>

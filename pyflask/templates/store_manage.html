@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>store_manage</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/storeList.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<div style="text-align: left">
+		<button class="homebtn" onclick="location.href = '/'"><i class="fa fa-home"></i> 편의점 재고 파악 시스템</button>
+	</div>
+
+	<h1 style="text-align:center;">매장 관리</h1>
+</head>
+
+
+<body>
+	<div style="text-align: right;">
+	<button id="myBtn" class="btn btn-success" style="text-align: center;">상품 추가</button>
+	</div>
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<form action="/insert" method="GET">
+				<input name="Stockid" type="hidden" value={{ user[9] }}>
+				<label for="Pname">상품명 : </label>
+				<input id="Pname" name="Pname" type="text" t>
+				<label for="quantity">재고량 : </label>
+				<input id="quantity" name="quantity" type="number" min="0">
+				<button type="submit" class="btn btn-success">상품 추가</button>
+			</form>
+		</div>
+	</div>
+
+	<h2> 상품 검색</h2>
+	<input class="form-control" id="myInput" type="text" placeholder="Search..">
+
+	<button class="accordion">{{ user[1] }}</button>
+	<div class="panel">
+
+		<div class="tab">
+			<button class="tablinks" onclick="openTab(event, '{{ user[9] }}')">상품목록</button>
+			<button class="tablinks" onclick="openTab(event, '{{ user[0] }}')">편의점 정보</button>
+		</div>
+
+		<div id='{{ user[9] }}' class="tabcontent">
+
+			{% for c in ["간편식사", "즉석조리", "과자류", "아이스크림", "식품", "음료", "생활용품"] %}
+			<button class="accordion">{{ c }}</button>
+			<div class="panel">
+				<table id="myTable">
+					<tr class="header">
+						<th style="width:15%;">이미지</th>
+						<th style="width:20%;">상품명</th>
+						<th style="width:15%;">가격</th>
+						<th style="width:15%;">재고량</th>
+						<th style="width:25%;">재고량 수정</th>
+						<th style="width:10%;">상품 삭제</th>
+
+					</tr>
+					{% for p in product_list %}
+					{% if p[1] == user[9] and p[5] == c: %}
+					<tr>
+						<td><img src={{ p[6] }} heigth="150" width="150"></td>
+						<td>{{ p[3] }}</td>
+						<td>{{ p[4] }}</td>
+						<td>{{ p[2] }}</td>
+						<td>
+							<form action="/update" method="POST">
+								<input name="Stockid" type="hidden" value={{ user[9] }}>
+								<input name="Pid" type="hidden" value={{ p[0] }}>
+								<input name="quantity" type="number" min="0">
+								<button type="submit" class="btn btn-success">재고량 수정</button>
+							</form>
+						</td>
+						<td>
+							<form action="/update" method="GET">
+								<input name="Stockid" type="hidden" value={{ user[9] }}>
+								<input name="Pid" type="hidden" value={{ p[0] }}>
+								<button type="submit" class="btn btn-danger">상품 삭제</button>
+							</form>
+						</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div id='{{ user[0] }}' class="tabcontent">
+			<ul>
+				<li>상호명</li>
+				<p>{{ user[1] }} </p>
+				<li>점주명</li>
+				<p>{{ user[2] }}</p>
+				<li>사업자등록번호</li>
+				<p>{{ user[0] }}</p>
+				<li>영업시간</li>
+				<p>{{ user[4] }}</p>
+				<li>전화번호</li>
+				<p>{{ user[5] }}</p>
+				<li>주소</li>
+				<p>{{ user[3] }}</p>
+			</ul>
+		</div>
+	</div>
+
+
+	<script>
+		var acc = document.getElementsByClassName("accordion");
+		var i;
+
+		for (i = 0; i < acc.length; i++) {
+			acc[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				this.nextElementSibling.classList.toggle("show");
+				var panel = this.nextElementSibling;
+				if (panel.style.display === "block") {
+					panel.style.display = "none";
+				} else {
+					panel.style.display = "block";
+				}
+			});
+		}
+	</script>
+
+	<script>
+		function openTab(evt, paneltype) {
+			var i, tabcontent, tablinks;
+
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+
+			document.getElementById(paneltype).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			$("#myInput").on("keyup", function () {
+				var value = $(this).val().toLowerCase();
+				$("#myTable tr").filter(function () {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+	</script>
+</body>
+
+<script>
+	// Get the modal
+	var modal = document.getElementById("myModal");
+
+	// Get the button that opens the modal
+	var btn = document.getElementById("myBtn");
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks the button, open the modal
+	btn.onclick = function () {
+		modal.style.display = "block";
+	}
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function () {
+		modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function (event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+</script>
+
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>store_list</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/storeList.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<div style="text-align: left">
+		<button class="homebtn" onclick="location.href = '/'"><i class="fa fa-home"></i> 편의점 재고 파악 시스템</button>
+	</div>
+	<h1 style="text-align:center;">내 주변 편의점 재고상황은?</h1>
+</head>
+
+
+<body>
+
+	<h2> 상품 검색</h2>
+	<input class="form-control" id="myInput" type="text" placeholder="Search..">
+	{% for store in store_list %}
+	<button class="accordion">{{ store[1] }}</button>
+	<div class="panel">
+
+		<div class="tab">
+			<button class="tablinks" onclick="openTab(event, '{{ store[9] }}')">상품목록</button>
+			<button class="tablinks" onclick="openTab(event, '{{ store[0] }}')">편의점 정보</button>
+		</div>
+
+		<div id='{{ store[9] }}' class="tabcontent">
+
+			{% for c in ["간편식사", "즉석조리", "과자류", "아이스크림", "식품", "음료", "생활용품"] %}
+			<button class="accordion">{{ c }}</button>
+			<div class="panel">
+				<table id="myTable">
+					<tr class="header">
+						<th style="width:25%;">이미지</th>
+						<th style="width:25%;">상품명</th>
+						<th style="width:25%;">가격</th>
+						<th style="width:25%;">재고량</th>
+					</tr>
+					{% for p in product_list %}
+					{% if p[1] == store[9] and p[5] == c: %}
+					<tr>
+						<td><img src={{ p[6] }} heigth="150" width="150"></td>
+						<td>{{ p[3] }}</td>
+						<td>{{ p[4] }}</td>
+						<td>{{ p[2] }}</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div id='{{ store[0] }}' class="tabcontent">
+			<ul>
+				<li>상호명</li>
+				<p>{{ store[1] }} </p>
+				<li>점주명</li>
+				<p>{{ store[2] }}</p>
+				<li>사업자등록번호</li>
+				<p>{{ store[0] }}</p>
+				<li>영업시간</li>
+				<p>{{ store[4] }}</p>
+				<li>전화번호</li>
+				<p>{{ store[5] }}</p>
+				<li>주소</li>
+				<p>{{ store[3] }}</p>
+			</ul>
+		</div>
+	</div>
+	{% endfor %}
+
+	<script>
+		var acc = document.getElementsByClassName("accordion");
+		var i;
+
+		for (i = 0; i < acc.length; i++) {
+			acc[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				this.nextElementSibling.classList.toggle("show");
+				var panel = this.nextElementSibling;
+				if (panel.style.display === "block") {
+					panel.style.display = "none";
+				} else {
+					panel.style.display = "block";
+				}
+			});
+		}
+	</script>
+
+	<script>
+		function openTab(evt, paneltype) {
+			var i, tabcontent, tablinks;
+
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+
+			document.getElementById(paneltype).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			$("#myInput").on("keyup", function () {
+				var value = $(this).val().toLowerCase();
+				$("#myTable tr").filter(function () {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+	</script>
+
+</body>
+
+</html>

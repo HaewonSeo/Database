@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>store_manage</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list.css') }}">
+
+	<h1>{{ user }}</h1>
+</head>
+
+
+<body>
+	<h2>내 주변 편의점</h2>
+
+	<h3>상품 검색</h3>
+	<input type="text" id="myInput" onkeyup="Search()" placeholder="Search for names.."  title="Type in a name">
+
+	<button class="accordion">편의점 1</button>
+	<div class="panel">
+		<div class="tab">
+			<button class="tablinks" onclick="openCity(event, 'London')">상품목록</button>
+			<button class="tablinks" onclick="openCity(event, 'Paris')">편의점 정보</button>
+		</div>
+
+		<div id="London" class="tabcontent">
+
+			<button class="accordion">과자</button>
+			<div class="panel">
+
+				<h3>상품 검색</h3>
+
+				<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." ㄴ
+					title="Type in a name">
+
+				<table id="myTable">
+					<tr class="header">
+						<th style="width:40%;">상품명</th>
+						<th style="width:30%;">가격</th>
+						<th style="width:30%;">재고량</th>
+					</tr>
+					<tr>
+						<td>초코하임</td>
+						<td>3,000</td>
+						<td>5</td>
+					</tr>
+					<tr>
+						<td>홈런볼</td>
+						<td>2,000</td>
+						<td>10</td>
+					</tr>
+					<tr>
+						<td>포카칩</td>
+						<td>3,000</td>
+						<td>15</td>
+					</tr>
+					<tr>
+						<td>스윙칩</td>
+						<td>3,000</td>
+						<td>25</td>
+					</tr>
+					<tr>
+						<td>아몬드빼빼로</td>
+						<td>1,500</td>
+						<td>30</td>
+					</tr>
+				</table>
+
+
+			</div>
+
+			<button class="accordion">음료</button>
+			<div class="panel">
+
+				<h3>상품 검색</h3>
+				<input type="text" id="myInput" onkeyup="Search()" placeholder="Search for names.." ㄴ
+					title="Type in a name">
+
+				<table id="myTable">
+					<tr class="header">
+						<th style="width:40%;">상품명</th>
+						<th style="width:30%;">가격</th>
+						<th style="width:30%;">재고량</th>
+					</tr>
+					<tr>
+						<td>코카콜라</td>
+						<td>3,000</td>
+						<td>5</td>
+					</tr>
+					<tr>
+						<td>사이다</td>
+						<td>2,000</td>
+						<td>10</td>
+					</tr>
+					<tr>
+						<td>카스</td>
+						<td>3,000</td>
+						<td>15</td>
+					</tr>
+					<tr>
+						<td>녹차</td>
+						<td>3,000</td>
+						<td>25</td>
+					</tr>
+					<tr>
+						<td>식혜</td>
+						<td>1,500</td>
+						<td>30</td>
+					</tr>
+				</table>
+			</div>
+
+
+		</div>
+
+		<div id="Paris" class="tabcontent">
+			<ul>
+				<li>상호명</li>
+				<p>GS25-서천희망점</p>
+				<li>사업자등록번호</li>
+				<p>126-22-12345</p>
+				<li>영업시간</li>
+				<p>11:00 - 23:00</p>
+				<li>주소</li>
+				<p>경기도 용인시 기흥구 서천동 743 서천마을2단지 102호</p>
+			</ul>
+
+		</div>
+	</div>
+
+	<button class="accordion">편의점 2</button>
+	<div class="panel">
+		<div class="tab">
+			<button class="tablinks" onclick="openCity(event, 'London')">상품목록</button>
+			<button class="tablinks" onclick="openCity(event, 'Paris')">편의점 정보</button>
+		</div>
+	</div>
+
+
+	<button class="accordion">편의점 3</button>
+	<div class="panel">
+		<div class="tab">
+			<button class="tablinks" onclick="openCity(event, 'London')">상품목록</button>
+			<button class="tablinks" onclick="openCity(event, 'Paris')">편의점 정보</button>
+		</div>
+	</div>
+
+
+
+	<script>
+		function openCity(evt, cityName) {
+			var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(cityName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+	</script>
+
+	<script>
+		function Search() {
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("myInput");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTable");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[0];
+				if (td) {
+					txtValue = td.textContent || td.innerText;
+					if (txtValue.toUpperCase().indexOf(filter) > -1) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+			}
+		}
+	</script>
+	<script>
+		var acc = document.getElementsByClassName("accordion");
+		var i;
+
+		for (i = 0; i < acc.length; i++) {
+			acc[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				var panel = this.nextElementSibling;
+				if (panel.style.display === "block") {
+					panel.style.display = "none";
+				} else {
+					panel.style.display = "block";
+				}
+			});
+		}
+	</script>
+
+</body>
+
+</html>
